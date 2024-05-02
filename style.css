@@ -1,7 +1,8 @@
 :root {
   --clr-black: hsl(0, 0%, 0%);
   --clr-red: hsl(350, 66%, 51%);
-  --clr-white: hsl(0, 0%, 96%);
+  --clr-white: hsl(0, 0%, 100%);
+  --clr-white-2: hsl(0, 0%, 96%);
   --clr-grey: hsl(0, 0%, 48%);
 
   --cell-size: 100px;
@@ -73,37 +74,79 @@ body {
 }
 
 .cell.x::before,
-.cell.x::after {
+.cell.x::after,
+.cell.circle::before {
+  background-color: var(--clr-black);
+}
+
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after,
+.board.circle .cell:not(.x):not(.circle):hover::before {
+  background-color: lightgray;
+}
+
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after {
   content: "";
   position: absolute;
   width: calc(var(--mark-size) * 0.15);
   height: var(--mark-size);
-  background-color: var(--clr-black);
 }
 
-.cell.x::before {
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before {
   transform: rotate(45deg);
 }
 
-.cell.x::after {
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after {
   transform: rotate(-45deg);
 }
 
 .cell.circle::before,
-.cell.circle::after {
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after {
   content: "";
   position: absolute;
   border-radius: 50%;
 }
 
-.cell.circle::before {
+.cell.circle::before,
+.board.circle .cell:not(.x):not(.circle):hover::before {
   width: var(--mark-size);
   height: var(--mark-size);
-  background-color: var(--clr-black);
 }
 
-.cell.circle::after {
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::after {
   width: calc(var(--mark-size) * 0.7);
   height: calc(var(--mark-size) * 0.7);
   background-color: var(--clr-white);
+}
+
+.winning-msg {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  place-content: center;
+  gap: 0.8rem;
+  color: var(--clr-white);
+  font-size: 5rem;
+}
+
+.winning-msg button {
+  font-size: 3rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.winning-msg.display {
+  display: grid;
 }
