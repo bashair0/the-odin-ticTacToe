@@ -4,10 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
     <title>Tic Tac Toe game</title>
   </head>
   <body>
     <h1>Tic Tac Toe game!</h1>
+    <section class="choose-mark">
+      <fieldset>
+        <legend>Choose your mark:</legend>
+        <label for="x">X</label>
+        <input type="radio" name="mark" id="x" value="x" />
+        <label for="o">O</label>
+        <input type="radio" name="mark" id="o" value="o" />
+      </fieldset>
+    </section>
     <div class="board" id="board">
       <div class="cell" data-cell></div>
       <div class="cell" data-cell></div>
