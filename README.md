@@ -25,16 +25,10 @@ This is a solution to the the-odin project [Tic tac toe project](https://www.the
 
 ### Screenshot
 
-![](assets/images/solution1.png)
-![](assets/images/solution2.png)
-![](assets/images/solution5.png)
-![](assets/images/solution3.png)
-![](assets/images/solution4.png)
-
 ### Links
 
-- Solution URL: [solution URL](https://github.com/bashair0/the-odin-library?tab=readme-ov-file)
-- Live Site URL: [live site URL](https://bashair0.github.io/the-odin-library/)
+- Solution URL: [solution URL](https://github.com/bashair0/e)
+- Live Site URL: [live site URL](https://bashair0.github.io/)
 
 ## My process
 
@@ -46,15 +40,8 @@ This is a solution to the the-odin project [Tic tac toe project](https://www.the
 
 ### What I learned
 
-I learned how create so many objects that share the same characteristic using a constructor function.
-
 ```js
-function Book(title, author, pagesNum, isRead) {
-  (this.title = title),
-    (this.author = author),
-    (this.pagesNum = pagesNum),
-    (this.isRead = isRead);
-}
+
 ```
 
 ## Author
@@ -63,5 +50,3 @@ function Book(title, author, pagesNum, isRead) {
 - Frontend Mentor - [@bashair0](https://www.frontendmentor.io/profile/bashair0)
 
 ## Acknowledgments
-
-The design of the webpage was inspired by [Algirdas Jasaitis](https://dribbble.com/AlgirdasJasaitis)
