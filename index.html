@@ -9,25 +9,42 @@
   </head>
   <body>
     <h1>Tic Tac Toe game!</h1>
-    <section class="choose-mark">
-      <fieldset>
-        <legend>Choose your mark:</legend>
-        <label for="x">X</label>
-        <input type="radio" name="mark" id="x" value="x" />
-        <label for="o">O</label>
-        <input type="radio" name="mark" id="o" value="o" />
-      </fieldset>
-    </section>
+    <div class="flex">
+      <form action="#" method="post">
+        <section class="choose-mark border-10">
+          <label for="name">Enter your name: </label>
+          <input type="text" id="name" name="name" class="border-10" />
+          <fieldset>
+            <legend>Choose your mark:</legend>
+            <label for="x" class="label-mark">X</label>
+            <input type="radio" name="mark" id="x" value="x" checked />
+            <label for="o" class="label-mark">O</label>
+            <input type="radio" name="mark" id="o" value="o" />
+          </fieldset>
+          <button type="submit" class="submit-btn" data-start-btn>
+            Start new game
+          </button>
+        </section>
+      </form>
+      <div class="grid display-data border-10">
+        <p class="player-name" id="player-name">player name</p>
+        <p class="computer-name" id="computer-name">Odin</p>
+        <p class="player-score" id="player-score">0</p>
+        <p class="computer-score" id="computer-score">0</p>
+        <p class="winner" id="winner"></p>
+      </div>
+    </div>
+
     <div class="board" id="board">
-      <div class="cell" data-cell></div>
-      <div class="cell" data-cell></div>
-      <div class="cell" data-cell></div>
-      <div class="cell" data-cell></div>
-      <div class="cell" data-cell></div>
-      <div class="cell" data-cell></div>
-      <div class="cell" data-cell></div>
-      <div class="cell" data-cell></div>
-      <div class="cell" data-cell></div>
+      <div class="cell" id="0" data-cell></div>
+      <div class="cell" id="1" data-cell></div>
+      <div class="cell" id="2" data-cell></div>
+      <div class="cell" id="3" data-cell></div>
+      <div class="cell" id="4" data-cell></div>
+      <div class="cell" id="5" data-cell></div>
+      <div class="cell" id="6" data-cell></div>
+      <div class="cell" id="7" data-cell></div>
+      <div class="cell" id="8" data-cell></div>
     </div>
     <div class="winning-msg" id="winning-msg">
       <div data-winning-msg-text></div>

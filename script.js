@@ -18,6 +18,7 @@ const gameBoard = (() => {
   const markCell = (cellIndex, mark) => {
     if (board[cellIndex] === '') {
       board[cellIndex] = mark
+      displayController.render()
       return true
     } else {
       return false
@@ -32,11 +33,12 @@ const gameBoard = (() => {
     return moves
   }
 
-  const getBoard = () => board
-
   const resetBoard = () => {
     board = ['', '', '', '', '', '', '', '', '']
+    displayController.render()
   }
+
+  const getBoard = () => board
 
   const isFull = () => {
     return board.every(cell => cell)
@@ -101,9 +103,10 @@ const createPlayer = (name, mark) => {
   }
 }
 
-const gameController = (() => {
-  let players = []
+const gameController = () => {
   let currentPlayer
+  let players = []
+  const computerName = 'Odin'
 
   const swapTurns = () => {
     currentPlayer = currentPlayer === players[0] ? players[1] : players[0]
@@ -117,49 +120,124 @@ const gameController = (() => {
     return availableMoves[randomMove]
   }
 
-  const startGame = () => {
+  const startGame = (playerName, playerMark, computerMark) => {
     gameBoard.resetBoard()
-    players = [createPlayer('Bashayer', 'X'), createPlayer('Hanli', 'O')]
+    players = [
+      createPlayer(playerName, playerMark),
+      createPlayer(computerName, computerMark)
+    ]
     currentPlayer = players[0]
   }
 
-  return {
-    swapTurns,
-    startGame,
-    getCurrentPlayer,
-    computerMove
-  }
-})()
-
-const gameFlowController = () => {
-  gameController.startGame()
-  let winner = gameBoard.checkForWin()
-
-  while (!winner) {
-    let currentPlayer = gameController.getCurrentPlayer()
-    let playerMove
-    if (gameBoard.checkForWin()) {
-      console.log(gameBoard.checkForWin())
-      winner = true
-    } else if (gameBoard.checkForDraw()) {
-      console.log('draw')
-      winner = true
-    } else {
-      if (currentPlayer.name === 'Hanli') {
-        console.log(currentPlayer.name)
-        playerMove = gameBoard.markCell(
-          gameController.computerMove(),
-          currentPlayer.mark
-        )
+  const playRound = index => {
+    let cellIndex
+    let move
+    let endRound = false
+    console.log(players)
+    currentPlayer = players[0]
+    while (!endRound) {
+      getCurrentPlayer()
+      if (gameBoard.checkForWin()) {
+        console.log(gameBoard.checkForWin())
+        endRound = true
+        return
+      } else if (gameBoard.checkForDraw()) {
+        console.log(gameBoard.checkForDraw())
+        endRound = true
+        return
       } else {
-        console.log(currentPlayer.name)
-        let index = prompt()
-        playerMove = gameBoard.markCell(index, currentPlayer.mark)
-      }
-      if (playerMove) {
-        gameController.swapTurns()
-        gameBoard.printFormattedBoard()
+        if (currentPlayer.name === computerName) {
+          cellIndex = computerMove()
+        } else {
+          cellIndex = index
+        }
+        move = gameBoard.markCell(cellIndex, currentPlayer.mark)
+        if (!move) return
+        else {
+          console.log(currentPlayer.name)
+          swapTurns()
+          gameBoard.printFormattedBoard()
+        }
       }
     }
   }
+
+  return {
+    getCurrentPlayer,
+    playRound,
+    startGame
+  }
 }
+
+const displayController = (() => {
+  const cellElements = document.querySelectorAll('[data-cell]')
+  const boardElement = document.querySelector('#board')
+  const submitButton = document.querySelector('[data-start-btn]')
+  const playerNameTextElement = document.querySelector('#player-name')
+  const playerScoreTextElement = document.querySelector('#player-score')
+  const computerNameTextElement = document.querySelector('#computer-name')
+  const computerScoreTextElement = document.querySelector('#computer-score')
+  const game = gameController()
+
+  const render = () => {
+    let board = gameBoard.getBoard()
+    cellElements.forEach((cell, index) => {
+      if (board[index] === 'x') {
+        cell.classList.add('x')
+      } else if (board[index] === 'o') {
+        cell.classList.add('circle')
+      } else {
+        cell.textContent = board[index]
+        cell.classList.remove('circle')
+        cell.classList.remove('x')
+      }
+    })
+  }
+
+  const setBoardHoverState = className => {
+    boardElement.classList.remove('x')
+    boardElement.classList.remove('circle')
+    boardElement.classList.add(className)
+  }
+
+  const startNewGame = e => {
+    e.preventDefault()
+    const playerName = document.querySelector('input[name="name"]').value
+    playerNameTextElement.textContent = playerName
+    const marks = document.querySelectorAll('input[name="mark"]')
+    let playerMark
+    let computerMark
+
+    marks.forEach(mark => {
+      if (!mark.checked) {
+        computerMark = mark.value
+      } else {
+        playerMark = mark.value
+      }
+    })
+
+    if (playerMark === 'o') {
+      setBoardHoverState('circle')
+    } else {
+      setBoardHoverState('x')
+    }
+
+    game.startGame(playerName, playerMark, computerMark)
+
+    const handleClick = e => {
+      const cell = e.target.id
+      game.playRound(cell)
+    }
+
+    cellElements.forEach(cell => {
+      cell.addEventListener('click', handleClick, { once: true })
+    })
+  }
+
+  submitButton.addEventListener('click', startNewGame)
+
+  return {
+    render,
+    startNewGame
+  }
+})()
