@@ -21,17 +21,19 @@
             <label for="o" class="label-mark">O</label>
             <input type="radio" name="mark" id="o" value="o" />
           </fieldset>
-          <button type="submit" class="submit-btn" data-start-btn>
+          <button type="submit" class="btn submit-btn" data-start-btn>
             Start new game
           </button>
         </section>
       </form>
       <div class="grid display-data border-10">
-        <p class="player-name" id="player-name">player name</p>
+        <p class="player-name" id="player-name">Player name</p>
         <p class="computer-name" id="computer-name">Odin</p>
         <p class="player-score" id="player-score">0</p>
         <p class="computer-score" id="computer-score">0</p>
-        <p class="winner" id="winner"></p>
+        <button type="button" class="btn round-btn" data-round-btn>
+          Another round
+        </button>
       </div>
     </div>
 
@@ -45,10 +47,6 @@
       <div class="cell" id="6" data-cell></div>
       <div class="cell" id="7" data-cell></div>
       <div class="cell" id="8" data-cell></div>
-    </div>
-    <div class="winning-msg" id="winning-msg">
-      <div data-winning-msg-text></div>
-      <button type="button" id="restart-btn">Restart</button>
     </div>
   </body>
 </html>

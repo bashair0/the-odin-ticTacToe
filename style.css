@@ -43,11 +43,6 @@ p {
   display: grid;
 }
 
-.dark-theme {
-  background-color: var(--clr-black);
-  color: var(--clr-white);
-}
-
 .border-10 {
   border-radius: 10px;
 }
@@ -62,7 +57,7 @@ p {
   margin-block: 2rem 5rem;
 }
 
-.winner {
+.round-btn {
   grid-column: span 2;
 }
 
@@ -97,9 +92,17 @@ p {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-.submit-btn {
+.player-score,
+.computer-score {
+  color: var(--clr-red);
+}
+
+.btn {
   cursor: pointer;
   background-color: transparent;
+}
+
+.submit-btn {
   padding: 0.5rem;
 }
 
@@ -111,7 +114,6 @@ p {
 
 .board {
   width: 100vw;
-  /* min-height: 80vh; */
   display: grid;
   grid-template-columns: repeat(3, auto);
   place-content: center;
@@ -205,28 +207,4 @@ p {
   width: calc(var(--mark-size) * 0.7);
   height: calc(var(--mark-size) * 0.7);
   background-color: var(--clr-white);
-}
-
-.winning-msg {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.9);
-  place-content: center;
-  gap: 0.8rem;
-  color: var(--clr-white);
-  font-size: 5rem;
-}
-
-.winning-msg button {
-  font-size: 3rem;
-  cursor: pointer;
-  padding: 0.5rem;
-}
-
-.winning-msg.display {
-  display: grid;
 }

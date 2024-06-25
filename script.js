@@ -18,7 +18,6 @@ const gameBoard = (() => {
   const markCell = (cellIndex, mark) => {
     if (board[cellIndex] === '') {
       board[cellIndex] = mark
-      displayController.render()
       return true
     } else {
       return false
@@ -35,7 +34,6 @@ const gameBoard = (() => {
 
   const resetBoard = () => {
     board = ['', '', '', '', '', '', '', '', '']
-    displayController.render()
   }
 
   const getBoard = () => board
@@ -106,6 +104,9 @@ const createPlayer = (name, mark) => {
 const gameController = () => {
   let currentPlayer
   let players = []
+  let PlayerMark
+  let playerScore
+  let computerScore
   const computerName = 'Odin'
 
   const swapTurns = () => {
@@ -120,29 +121,41 @@ const gameController = () => {
     return availableMoves[randomMove]
   }
 
-  const startGame = (playerName, playerMark, computerMark) => {
+  const newRound = () => {
     gameBoard.resetBoard()
+    displayController.render()
+    currentPlayer = players[0]
+  }
+
+  const startGame = (playerName, playerMark, computerMark) => {
+    playerScore = 0
+    computerScore = 0
+    PlayerMark = playerMark
     players = [
       createPlayer(playerName, playerMark),
       createPlayer(computerName, computerMark)
     ]
-    currentPlayer = players[0]
+    newRound()
+    displayController.updateScores()
   }
 
   const playRound = index => {
     let cellIndex
     let move
     let endRound = false
-    console.log(players)
     currentPlayer = players[0]
     while (!endRound) {
-      getCurrentPlayer()
       if (gameBoard.checkForWin()) {
-        console.log(gameBoard.checkForWin())
+        if (gameBoard.checkForWin().winner === PlayerMark) {
+          playerScore += 1
+          displayController.updateScores()
+        } else {
+          computerScore += 1
+          displayController.updateScores()
+        }
         endRound = true
         return
       } else if (gameBoard.checkForDraw()) {
-        console.log(gameBoard.checkForDraw())
         endRound = true
         return
       } else {
@@ -154,18 +167,23 @@ const gameController = () => {
         move = gameBoard.markCell(cellIndex, currentPlayer.mark)
         if (!move) return
         else {
-          console.log(currentPlayer.name)
           swapTurns()
-          gameBoard.printFormattedBoard()
+          displayController.render()
         }
       }
     }
   }
 
+  const getPlayerScore = () => playerScore
+  const getComputerScore = () => computerScore
+
   return {
     getCurrentPlayer,
     playRound,
-    startGame
+    startGame,
+    getComputerScore,
+    getPlayerScore,
+    newRound
   }
 }
 
@@ -173,11 +191,16 @@ const displayController = (() => {
   const cellElements = document.querySelectorAll('[data-cell]')
   const boardElement = document.querySelector('#board')
   const submitButton = document.querySelector('[data-start-btn]')
+  const newRoundButton = document.querySelector('[data-round-btn]')
   const playerNameTextElement = document.querySelector('#player-name')
   const playerScoreTextElement = document.querySelector('#player-score')
-  const computerNameTextElement = document.querySelector('#computer-name')
   const computerScoreTextElement = document.querySelector('#computer-score')
   const game = gameController()
+
+  const updateScores = () => {
+    playerScoreTextElement.textContent = game.getPlayerScore()
+    computerScoreTextElement.textContent = game.getComputerScore()
+  }
 
   const render = () => {
     let board = gameBoard.getBoard()
@@ -203,10 +226,15 @@ const displayController = (() => {
   const startNewGame = e => {
     e.preventDefault()
     const playerName = document.querySelector('input[name="name"]').value
-    playerNameTextElement.textContent = playerName
     const marks = document.querySelectorAll('input[name="mark"]')
     let playerMark
     let computerMark
+
+    if (!playerName) {
+      playerNameTextElement.textContent = 'Player name'
+    } else {
+      playerNameTextElement.textContent = playerName
+    }
 
     marks.forEach(mark => {
       if (!mark.checked) {
@@ -226,18 +254,23 @@ const displayController = (() => {
 
     const handleClick = e => {
       const cell = e.target.id
+      if (gameBoard.checkForDraw()) return
+      if (gameBoard.checkForWin()) return
       game.playRound(cell)
     }
 
     cellElements.forEach(cell => {
-      cell.addEventListener('click', handleClick, { once: true })
+      cell.addEventListener('click', handleClick)
     })
+
+    newRoundButton.addEventListener('click', game.newRound)
   }
 
   submitButton.addEventListener('click', startNewGame)
 
   return {
     render,
-    startNewGame
+    startNewGame,
+    updateScores
   }
 })()
